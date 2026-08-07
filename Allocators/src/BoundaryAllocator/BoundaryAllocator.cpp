@@ -5,9 +5,6 @@
 #include <utility>
 #include <bit>
 
-#ifndef NDEBUG
-#endif
-
 BoundaryAllocator::BoundaryAllocator(size_t capacity) : capacity(capacity) {
     memory = ::operator new(capacity);
     reset();
