@@ -1,0 +1,281 @@
+Start testing: Aug 06 15:52 EEST
+----------------------------------------------------------
+1/13 Testing: BoundaryAllocatorTest.AllocateAndDeallocate
+1/13 Test: BoundaryAllocatorTest.AllocateAndDeallocate
+Command: "/Users/daniel/Code/OS/build/Allocators/tests/allocator_tests" "--gtest_filter=BoundaryAllocatorTest.AllocateAndDeallocate" "--gtest_also_run_disabled_tests"
+Directory: /Users/daniel/Code/OS/build/Allocators/tests
+"BoundaryAllocatorTest.AllocateAndDeallocate" start time: Aug 06 15:52 EEST
+Output:
+----------------------------------------------------------
+Running main() from /Users/daniel/Code/OS/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = BoundaryAllocatorTest.AllocateAndDeallocate
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from BoundaryAllocatorTest
+[ RUN      ] BoundaryAllocatorTest.AllocateAndDeallocate
+/Users/daniel/Code/OS/Allocators/tests/boundary_allocator_tests.cpp:106: Failure
+Value of: iter->prev->isFree
+  Actual: true
+Expected: false
+Found non-merged blocks
+
+/Users/daniel/Code/OS/Allocators/tests/boundary_allocator_tests.cpp:123: Failure
+Value of: freeListFree.contains(iter)
+  Actual: false
+Expected: true
+Found free block not inside the free list
+
+[  FAILED  ] BoundaryAllocatorTest.AllocateAndDeallocate (0 ms)
+[----------] 1 test from BoundaryAllocatorTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 0 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] BoundaryAllocatorTest.AllocateAndDeallocate
+
+ 1 FAILED TEST
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Failed.
+"BoundaryAllocatorTest.AllocateAndDeallocate" end time: Aug 06 15:52 EEST
+"BoundaryAllocatorTest.AllocateAndDeallocate" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/13 Testing: BoundaryAllocatorTest.AllocateAndDeallocateTwice
+2/13 Test: BoundaryAllocatorTest.AllocateAndDeallocateTwice
+Command: "/Users/daniel/Code/OS/build/Allocators/tests/allocator_tests" "--gtest_filter=BoundaryAllocatorTest.AllocateAndDeallocateTwice" "--gtest_also_run_disabled_tests"
+Directory: /Users/daniel/Code/OS/build/Allocators/tests
+"BoundaryAllocatorTest.AllocateAndDeallocateTwice" start time: Aug 06 15:52 EEST
+Output:
+----------------------------------------------------------
+Running main() from /Users/daniel/Code/OS/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = BoundaryAllocatorTest.AllocateAndDeallocateTwice
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from BoundaryAllocatorTest
+[ RUN      ] BoundaryAllocatorTest.AllocateAndDeallocateTwice
+/Users/daniel/Code/OS/Allocators/tests/boundary_allocator_tests.cpp:123: Failure
+Value of: freeListFree.contains(iter)
+  Actual: false
+Expected: true
+Found free block not inside the free list
+
+/Users/daniel/Code/OS/Allocators/tests/boundary_allocator_tests.cpp:106: Failure
+Value of: iter->prev->isFree
+  Actual: true
+Expected: false
+Found non-merged blocks
+
+/Users/daniel/Code/OS/Allocators/tests/boundary_allocator_tests.cpp:123: Failure
+Value of: freeListFree.contains(iter)
+  Actual: false
+Expected: true
+Found free block not inside the free list
+
+[  FAILED  ] BoundaryAllocatorTest.AllocateAndDeallocateTwice (0 ms)
+[----------] 1 test from BoundaryAllocatorTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 0 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] BoundaryAllocatorTest.AllocateAndDeallocateTwice
+
+ 1 FAILED TEST
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Failed.
+"BoundaryAllocatorTest.AllocateAndDeallocateTwice" end time: Aug 06 15:52 EEST
+"BoundaryAllocatorTest.AllocateAndDeallocateTwice" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/13 Testing: BoundaryAllocatorTest.AllocateOverCapacity
+3/13 Test: BoundaryAllocatorTest.AllocateOverCapacity
+Command: "/Users/daniel/Code/OS/build/Allocators/tests/allocator_tests" "--gtest_filter=BoundaryAllocatorTest.AllocateOverCapacity" "--gtest_also_run_disabled_tests"
+Directory: /Users/daniel/Code/OS/build/Allocators/tests
+"BoundaryAllocatorTest.AllocateOverCapacity" start time: Aug 06 15:52 EEST
+Output:
+----------------------------------------------------------
+Running main() from /Users/daniel/Code/OS/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = BoundaryAllocatorTest.AllocateOverCapacity
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from BoundaryAllocatorTest
+[ RUN      ] BoundaryAllocatorTest.AllocateOverCapacity
+[       OK ] BoundaryAllocatorTest.AllocateOverCapacity (0 ms)
+[----------] 1 test from BoundaryAllocatorTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"BoundaryAllocatorTest.AllocateOverCapacity" end time: Aug 06 15:52 EEST
+"BoundaryAllocatorTest.AllocateOverCapacity" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/13 Testing: BoundaryAllocatorTest.DeallocateInvalidPointer
+4/13 Test: BoundaryAllocatorTest.DeallocateInvalidPointer
+Command: "/Users/daniel/Code/OS/build/Allocators/tests/allocator_tests" "--gtest_filter=BoundaryAllocatorTest.DeallocateInvalidPointer" "--gtest_also_run_disabled_tests"
+Directory: /Users/daniel/Code/OS/build/Allocators/tests
+"BoundaryAllocatorTest.DeallocateInvalidPointer" start time: Aug 06 15:52 EEST
+Output:
+----------------------------------------------------------
+Running main() from /Users/daniel/Code/OS/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = BoundaryAllocatorTest.DeallocateInvalidPointer
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from BoundaryAllocatorTest
+[ RUN      ] BoundaryAllocatorTest.DeallocateInvalidPointer
+/Users/daniel/Code/OS/Allocators/tests/boundary_allocator_tests.cpp:106: Failure
+Value of: iter->prev->isFree
+  Actual: true
+Expected: false
+Found non-merged blocks
+
+/Users/daniel/Code/OS/Allocators/tests/boundary_allocator_tests.cpp:123: Failure
+Value of: freeListFree.contains(iter)
+  Actual: false
+Expected: true
+Found free block not inside the free list
+
+[  FAILED  ] BoundaryAllocatorTest.DeallocateInvalidPointer (0 ms)
+[----------] 1 test from BoundaryAllocatorTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 0 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] BoundaryAllocatorTest.DeallocateInvalidPointer
+
+ 1 FAILED TEST
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Failed.
+"BoundaryAllocatorTest.DeallocateInvalidPointer" end time: Aug 06 15:52 EEST
+"BoundaryAllocatorTest.DeallocateInvalidPointer" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/13 Testing: BoundaryAllocatorTest.AllocateWholeArena
+5/13 Test: BoundaryAllocatorTest.AllocateWholeArena
+Command: "/Users/daniel/Code/OS/build/Allocators/tests/allocator_tests" "--gtest_filter=BoundaryAllocatorTest.AllocateWholeArena" "--gtest_also_run_disabled_tests"
+Directory: /Users/daniel/Code/OS/build/Allocators/tests
+"BoundaryAllocatorTest.AllocateWholeArena" start time: Aug 06 15:52 EEST
+Output:
+----------------------------------------------------------
+Running main() from /Users/daniel/Code/OS/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = BoundaryAllocatorTest.AllocateWholeArena
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from BoundaryAllocatorTest
+[ RUN      ] BoundaryAllocatorTest.AllocateWholeArena
+/Users/daniel/Code/OS/Allocators/tests/boundary_allocator_tests.cpp:123: Failure
+Value of: freeListFree.contains(iter)
+  Actual: false
+Expected: true
+Found free block not inside the free list
+
+unknown file: Failure
+C++ exception with description "std::bad_alloc" thrown in the test body.
+
+[  FAILED  ] BoundaryAllocatorTest.AllocateWholeArena (0 ms)
+[----------] 1 test from BoundaryAllocatorTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 0 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] BoundaryAllocatorTest.AllocateWholeArena
+
+ 1 FAILED TEST
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Failed.
+"BoundaryAllocatorTest.AllocateWholeArena" end time: Aug 06 15:52 EEST
+"BoundaryAllocatorTest.AllocateWholeArena" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/13 Testing: BoundaryAllocatorTest.AllocateInOnlyFreeBlock
+6/13 Test: BoundaryAllocatorTest.AllocateInOnlyFreeBlock
+Command: "/Users/daniel/Code/OS/build/Allocators/tests/allocator_tests" "--gtest_filter=BoundaryAllocatorTest.AllocateInOnlyFreeBlock" "--gtest_also_run_disabled_tests"
+Directory: /Users/daniel/Code/OS/build/Allocators/tests
+"BoundaryAllocatorTest.AllocateInOnlyFreeBlock" start time: Aug 06 15:52 EEST
+Output:
+----------------------------------------------------------
+Running main() from /Users/daniel/Code/OS/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = BoundaryAllocatorTest.AllocateInOnlyFreeBlock
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from BoundaryAllocatorTest
+[ RUN      ] BoundaryAllocatorTest.AllocateInOnlyFreeBlock
+/Users/daniel/Code/OS/Allocators/tests/boundary_allocator_tests.cpp:123: Failure
+Value of: freeListFree.contains(iter)
+  Actual: false
+Expected: true
+Found free block not inside the free list
+
+unknown file: Failure
+C++ exception with description "std::bad_alloc" thrown in the test body.
+
+[  FAILED  ] BoundaryAllocatorTest.AllocateInOnlyFreeBlock (0 ms)
+[----------] 1 test from BoundaryAllocatorTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 0 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] BoundaryAllocatorTest.AllocateInOnlyFreeBlock
+
+ 1 FAILED TEST
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Failed.
+"BoundaryAllocatorTest.AllocateInOnlyFreeBlock" end time: Aug 06 15:52 EEST
+"BoundaryAllocatorTest.AllocateInOnlyFreeBlock" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/13 Testing: BoundaryAllocatorTest.RandomisedMemoryOperations
+7/13 Test: BoundaryAllocatorTest.RandomisedMemoryOperations
+Command: "/Users/daniel/Code/OS/build/Allocators/tests/allocator_tests" "--gtest_filter=BoundaryAllocatorTest.RandomisedMemoryOperations" "--gtest_also_run_disabled_tests"
+Directory: /Users/daniel/Code/OS/build/Allocators/tests
+"BoundaryAllocatorTest.RandomisedMemoryOperations" start time: Aug 06 15:52 EEST
+Output:
+----------------------------------------------------------
+Running main() from /Users/daniel/Code/OS/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = BoundaryAllocatorTest.RandomisedMemoryOperations
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from BoundaryAllocatorTest
+[ RUN      ] BoundaryAllocatorTest.RandomisedMemoryOperations
+/Users/daniel/Code/OS/Allocators/tests/boundary_allocator_tests.cpp:123: Failure
+Value of: freeListFree.contains(iter)
+  Actual: false
+Expected: true
+Found free block not inside the free list
+
+[  FAILED  ] BoundaryAllocatorTest.RandomisedMemoryOperations (0 ms)
+[----------] 1 test from BoundaryAllocatorTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 0 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] BoundaryAllocatorTest.RandomisedMemoryOperations
+
+ 1 FAILED TEST
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Failed.
+"BoundaryAllocatorTest.RandomisedMemoryOperations" end time: Aug 06 15:52 EEST
+"BoundaryAllocatorTest.RandomisedMemoryOperations" time elapsed: 00:00:00
+----------------------------------------------------------
+

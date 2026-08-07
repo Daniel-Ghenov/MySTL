@@ -1,0 +1,1 @@
+/opt/homebrew/opt/llvm/bin/clang++  -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/allocator_tests.dir/boundary_allocator_tests.cpp.o CMakeFiles/allocator_tests.dir/buddy_allocator_tests.cpp.o -o allocator_tests  ../src/liballocators_lib.a ../../lib/libgtest_main.a ../../lib/libgtest.a

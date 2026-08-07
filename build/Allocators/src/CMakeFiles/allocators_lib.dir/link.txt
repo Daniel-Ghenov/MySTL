@@ -1,0 +1,2 @@
+/usr/bin/ar qc liballocators_lib.a CMakeFiles/allocators_lib.dir/BoundaryAllocator/BoundaryAllocator.cpp.o CMakeFiles/allocators_lib.dir/BuddyAllocator/BuddyAllocator.cpp.o
+/usr/bin/ranlib liballocators_lib.a
