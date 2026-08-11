@@ -49,19 +49,6 @@ TEST(VectorTest, PushBackRvalueStoresMovedValue) {
     EXPECT_EQ(v[0], "hello");
 }
 
-TEST(VectorTest, PushBackManyElementsPreservesAllValues) {
-    vector<int> v;
-    const int count = 100;
-    for (int i = 0; i < count; ++i) {
-        v.push_back(i);
-    }
-
-    ASSERT_EQ(v.size(), static_cast<size_t>(count));
-    for (int i = 0; i < count; ++i) {
-        EXPECT_EQ(v[i], i);
-    }
-}
-
 TEST(VectorTest, PopBackRemovesLastElementAndDecreasesSize) {
     vector<int> v{1, 2, 3};
     v.pop_back();

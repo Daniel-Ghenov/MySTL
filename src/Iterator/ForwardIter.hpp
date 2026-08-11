@@ -16,6 +16,8 @@ public:
 
 
     virtual bool operator<(const forward_iterator& other);
+    virtual bool operator==(const forward_iterator& other);
+    virtual bool operator!=(const forward_iterator& other);
 
     virtual const T& operator*() const;
     virtual T& operator*();
@@ -34,6 +36,8 @@ public:
     const_forward_iterator operator++(int a);
 
     virtual bool operator<(const const_forward_iterator& other);
+    virtual bool operator==(const const_forward_iterator& other);
+    virtual bool operator!=(const const_forward_iterator& other);
 
     virtual const T& operator*() const;
     virtual const T* operator->();
@@ -57,6 +61,14 @@ forward_iterator<T> forward_iterator<T>::operator++(int a){
 template <typename T>
 bool forward_iterator<T>::operator<(const forward_iterator& other){
     return _ptr < other._ptr;
+}
+template <typename T>
+bool forward_iterator<T>::operator==(const forward_iterator& other){
+    return _ptr == other._ptr;
+}
+template <typename T>
+bool forward_iterator<T>::operator!=(const forward_iterator& other){
+    return _ptr != other._ptr;
 }
 
 template <typename T>
@@ -92,6 +104,14 @@ const_forward_iterator<T> const_forward_iterator<T>::operator++(int a){
 template <typename T>
 bool const_forward_iterator<T>::operator<(const const_forward_iterator& other){
     return _ptr < other._ptr;
+}
+template <typename T>
+bool const_forward_iterator<T>::operator==(const const_forward_iterator& other){
+    return _ptr == other._ptr;
+}
+template <typename T>
+bool const_forward_iterator<T>::operator!=(const const_forward_iterator& other){
+    return _ptr != other._ptr;
 }
 
 template <typename T>

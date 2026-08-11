@@ -262,17 +262,17 @@ void vector<T>::resize(size_t size, const T& fill){
 
     void* temp = ::operator new(_capacity * sizeof(T));
 
-    for(size_t i {0}; i <((_size > size)? size : _size); i++){
-        if(i > _size){
-            new (static_cast<std::byte*>(temp) + (i * sizeof(T))) T(fill);
-        }
-        else
-            new (static_cast<std::byte*>(temp) + (i * sizeof(T))) T(operator[](i));
+    size_t copyCount = std::min(_size, size);
+    for(size_t i {0}; i < copyCount; i++){
+        new (static_cast<std::byte*>(temp) + (i * sizeof(T))) T(operator[](i));
+    }
+    for(size_t i = copyCount; i < size; i++){
+        new (static_cast<std::byte*>(temp) + (i * sizeof(T))) T(fill);
     }
 
-    _size = (_size > size)? size : _size;
     ::operator delete(_data);
     _data = temp;
+    _size = size;
 
 }
 template <typename T>
@@ -285,9 +285,17 @@ size_t vector<T>::capacity() const{
 }
 template <typename T>
 void vector<T>::reserve(size_t number){
-    if(number > _size){
-        resize(number);
+    if(number <= _capacity)
+        return;
+
+    void* temp = ::operator new(number * sizeof(T));
+    for(size_t i {0}; i < _size; i++){
+        new (static_cast<std::byte*>(temp) + (i * sizeof(T))) T(operator[](i));
     }
+
+    ::operator delete(_data);
+    _data = temp;
+    _capacity = number;
 }
 
 //_data Modificators
@@ -352,8 +360,9 @@ void vector<T>::insert(size_t index, const T& toInsert){
     for(size_t i = _size ; i > index; i--){
         std::swap(operator[](i), operator[](i - 1));
     }
-    
+
     new (static_cast<std::byte*>(_data) + (index * sizeof(T))) T(toInsert);
+    _size++;
 }
 
 template <typename T>
@@ -367,8 +376,9 @@ void vector<T>::insert(size_t index, T&& toInsert){
     for(size_t i = _size ; i > index; i--){
         std::swap(operator[](i), operator[](i - 1));
     }
-    
+
     new (static_cast<std::byte*>(_data) + (index * sizeof(T))) T(std::move(toInsert));
+    _size++;
 }
 
 template <typename T>
@@ -389,7 +399,7 @@ void vector<T>::swap(size_t index1, size_t index2){
 
 template<typename T>
 vector<T>::operator bool() const{
-    return(_data == nullptr || _size == 0);
+    return !(_data == nullptr || _size == 0);
 }
 
 template<typename T>
@@ -414,19 +424,19 @@ vector<T>::const_iterator vector<T>::cbegin() const{
 
 template<typename T>
 vector<T>::reverse_iterator vector<T>::rend(){
-    return vector<T>::reverse_iterator(static_cast<T*>(_data) - 1);
+    return vector<T>::reverse_iterator(static_cast<T*>(_data));
 }
 template<typename T>
 vector<T>::const_reverse_iterator vector<T>::crend() const{
-    return vector<T>::const_reverse_iterator(static_cast<T*>(_data) - 1);
+    return vector<T>::const_reverse_iterator(static_cast<T*>(_data));
 }
 template<typename T>
 vector<T>::reverse_iterator vector<T>::rbegin(){
-    return vector<T>::reverse_iterator(static_cast<T*>(_data) + _size - 1);
+    return vector<T>::reverse_iterator(static_cast<T*>(_data) + _size);
 }
 template<typename T>
 vector<T>::const_reverse_iterator vector<T>::crbegin() const{
-    return vector<T>::const_reverse_iterator(static_cast<T*>(_data) + _size - 1);
+    return vector<T>::const_reverse_iterator(static_cast<T*>(_data) + _size);
 }
 
 

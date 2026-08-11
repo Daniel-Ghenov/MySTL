@@ -29,6 +29,8 @@ private:
         Node(T&& data, Node* next) : data(std::forward<T>(data)), next(next) {}
         Node(T&& data, Node* prev, Node* next): data(std::forward<T>(data)), next(next), prev(prev) {}
 
+        template <class... Args>
+        Node(Node* prev, Node* next, Args&&... args): data(std::forward<Args>(args)...), next(next), prev(prev) {}
 
     };
 
@@ -55,6 +57,8 @@ public:
     }
 
     list(const list& other){
+        sentinel = new Node();
+        sentinel->next = sentinel->prev = sentinel;
         copyFrom(other);
     }
 
@@ -72,25 +76,32 @@ public:
     }
 
     void push_back(const T& data){
-        sentinel->prev = new Node(data, sentinel->prev, sentinel);
-        if(sentinel->prev->prev == sentinel)
-            sentinel->next = sentinel->prev;
+        Node* oldLast = sentinel->prev;
+        sentinel->prev = new Node(data, oldLast, sentinel);
+        oldLast->next = sentinel->prev;
     }
     void push_front(const T& data){
-        sentinel->next = new Node(data, sentinel, sentinel->next);
-        if(sentinel->next->next == sentinel)
-            sentinel->prev = sentinel->next;
+        Node* oldFirst = sentinel->next;
+        sentinel->next = new Node(data, sentinel, oldFirst);
+        oldFirst->prev = sentinel->next;
     }
 
     void push_back(T&& data){
-        sentinel->prev = new Node(std::move(data), sentinel->prev, sentinel);
-        if(sentinel->prev->prev == sentinel)
-            sentinel->next = sentinel->prev;
+        Node* oldLast = sentinel->prev;
+        sentinel->prev = new Node(std::move(data), oldLast, sentinel);
+        oldLast->next = sentinel->prev;
     }
     void push_front(T&& data){
-        sentinel->next = new Node(std::move(data), sentinel, sentinel->next);
-        if(sentinel->next->next == sentinel)
-            sentinel->prev = sentinel->next;
+        Node* oldFirst = sentinel->next;
+        sentinel->next = new Node(std::move(data), sentinel, oldFirst);
+        oldFirst->prev = sentinel->next;
+    }
+
+    template <class... Args>
+    void emplace_front(Args&&... args){
+        Node* oldFirst = sentinel->next;
+        sentinel->next = new Node(sentinel, oldFirst, std::forward<Args>(args)...);
+        oldFirst->prev = sentinel->next;
     }
 
     void pop_back(){
@@ -153,6 +164,12 @@ public:
     list::const_iterator cbegin() const{
         return list::const_iterator(sentinel->next);
     }
+    list::const_iterator end() const{
+        return list::const_iterator(sentinel);
+    }
+    list::const_iterator begin() const{
+        return list::const_iterator(sentinel->next);
+    }
     list::r_iterator rend(){
         return list::r_iterator(sentinel);
     }
@@ -197,8 +214,10 @@ private:
 public:
 
     class iterator{
-    protected:
+    private:
         Node* ptr = nullptr;
+        friend class const_iterator;
+        friend class list;
     public:
 
         iterator() = default;
@@ -210,10 +229,10 @@ public:
             return ptr->data;
         }
         T* operator->(){
-            return ptr->data;
+            return &ptr->data;
         }
         const T& operator*() const{
-            return &ptr->data;
+            return ptr->data;
         }
         const T* operator->() const{
             return &ptr->data;
@@ -237,25 +256,59 @@ public:
             ptr = ptr->prev;
             return old;
         }
-        virtual bool operator==(const iterator& other){
+        virtual bool operator==(const iterator& other) const{
             return ptr == other.ptr;
         }
-        virtual bool operator==(const list::const_iterator& other);
+        virtual bool operator==(const list::const_iterator& other) const;
 
-        virtual bool operator!=(const iterator& other){
+        virtual bool operator!=(const iterator& other) const{
             return !operator==(other);
         }
-        virtual bool operator!=(const list::const_iterator& other);
+        virtual bool operator!=(const list::const_iterator& other) const;
 
     };
 
-    class const_iterator : public list::iterator{
+    class const_iterator{
+    private:
+        Node* ptr = nullptr;
+        friend class iterator;
     public:
         const_iterator() = default;
-        const_iterator(Node* ptr): iterator(ptr) {}
+        const_iterator(Node* ptr): ptr(ptr) {}
+        const_iterator(const iterator& other): ptr(other.ptr) {}
 
-        Node& operator*() = delete;
-        Node* operator->() = delete;
+        const T& operator*() const{
+            return ptr->data;
+        }
+        const T* operator->() const{
+            return &ptr->data;
+        }
+
+        const_iterator& operator++(){
+            ptr = ptr->next;
+            return *this;
+        }
+        const_iterator operator++(int a){
+            const_iterator old = *this;
+            ptr = ptr->next;
+            return old;
+        }
+        const_iterator& operator--(){
+            ptr = ptr->prev;
+            return *this;
+        }
+        const_iterator operator--(int a){
+            const_iterator old = *this;
+            ptr = ptr->prev;
+            return old;
+        }
+
+        bool operator==(const const_iterator& other) const{
+            return ptr == other.ptr;
+        }
+        bool operator!=(const const_iterator& other) const{
+            return !operator==(other);
+        }
     };
 
     class r_iterator: public list::iterator{
@@ -297,7 +350,12 @@ public:
 };
 
 template <typename T>
-bool list<T>::iterator::operator!=(const list<T>::const_iterator& other){
+bool list<T>::iterator::operator==(const list<T>::const_iterator& other) const{
+    return ptr == other.ptr;
+}
+
+template <typename T>
+bool list<T>::iterator::operator!=(const list<T>::const_iterator& other) const{
     return ptr != other.ptr;
 }
 

@@ -25,6 +25,7 @@ namespace mystd {
             if(condition(*first)){
                 return first;
             }
+            first++;
         }
         return last;
     }
@@ -37,6 +38,7 @@ namespace mystd {
             if(!condition(*first)){
                 return first;
             }
+            first++;
         }
         return last;
     }
@@ -62,6 +64,7 @@ namespace mystd {
             if(condition(*first)){
                 count++;
             }
+            first++;
         }
         return count;
     }
@@ -71,6 +74,7 @@ namespace mystd {
 
         while(first != last){
             f(*first);
+            first++;
         }
     }
 
