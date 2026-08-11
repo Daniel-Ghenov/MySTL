@@ -158,4 +158,3 @@ size_t BoundaryAllocator::getNextPowerOfTwo(size_t size) {
     return std::bit_ceil(size);
 }
 
-} // namespace mystd
