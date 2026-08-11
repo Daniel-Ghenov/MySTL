@@ -5,8 +5,7 @@
 #include <utility>
 #include <bit>
 
-#ifndef NDEBUG
-#endif
+namespace mystd {
 
 BoundaryAllocator::BoundaryAllocator(size_t capacity) : capacity(capacity) {
     memory = ::operator new(capacity);
@@ -159,3 +158,4 @@ size_t BoundaryAllocator::getNextPowerOfTwo(size_t size) {
     return std::bit_ceil(size);
 }
 
+} // namespace mystd

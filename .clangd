@@ -1,0 +1,16 @@
+CompileFlags:
+  CompilationDatabase: /Users/daniel/Code/MySTL/build
+  Add:
+    - -std=c++2c
+    - -I/Users/daniel/Code/MySTL/src/Algorithm
+    - -I/Users/daniel/Code/MySTL/src/Allocators/src
+    - -I/Users/daniel/Code/MySTL/src/Allocators/src/BoundaryAllocator
+    - -I/Users/daniel/Code/MySTL/src/Allocators/src/BuddyAllocator
+    - -I/Users/daniel/Code/MySTL/src/Iterator
+    - -I/Users/daniel/Code/MySTL/src/List
+    - -I/Users/daniel/Code/MySTL/src/SmartPointer
+    - -I/Users/daniel/Code/MySTL/src/String
+    - -I/Users/daniel/Code/MySTL/src/String/RollingHash
+    - -I/Users/daniel/Code/MySTL/src/Tuple
+    - -I/Users/daniel/Code/MySTL/src/UnorderedMap
+    - -I/Users/daniel/Code/MySTL/src/Vector

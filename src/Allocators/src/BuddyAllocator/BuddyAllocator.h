@@ -1,9 +1,11 @@
-#ifndef BUDDYALLOCATOR_H
-#define BUDDYALLOCATOR_H
+#ifndef MYSTD_ALLOCATORS_BUDDYALLOCATOR_BUDDYALLOCATOR_H
+#define MYSTD_ALLOCATORS_BUDDYALLOCATOR_BUDDYALLOCATOR_H
 
-#include "../BaseAllocator.h"
+#include "BaseAllocator.h"
 #include <cstddef>
 #include <vector>
+
+namespace mystd {
 
 class BuddyAllocator : public BaseAllocator {
 private:
@@ -50,4 +52,6 @@ private:
     friend class BuddyAllocatorTest;
 };
 
-#endif // BUDDYALLOCATOR_H
+} // namespace mystd
+
+#endif // MYSTD_ALLOCATORS_BUDDYALLOCATOR_BUDDYALLOCATOR_H

@@ -1,7 +1,9 @@
-#ifndef BASEALLOCATOR_H
-#define BASEALLOCATOR_H
+#ifndef MYSTD_ALLOCATORS_BASEALLOCATOR_H
+#define MYSTD_ALLOCATORS_BASEALLOCATOR_H
 
 #include <cstddef>
+
+namespace mystd {
 
 class BaseAllocator {
 public:
@@ -12,6 +14,6 @@ public:
     virtual void reset() = 0;
 };
 
+} // namespace mystd
 
-
-#endif //ASEALLOCATOR_H
+#endif // MYSTD_ALLOCATORS_BASEALLOCATOR_H

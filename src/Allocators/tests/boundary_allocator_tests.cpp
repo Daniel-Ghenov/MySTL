@@ -3,6 +3,8 @@
 #include <unordered_set>
 #include "BoundaryAllocator.h"
 
+namespace mystd {
+
 class BoundaryAllocatorTest : public ::testing::Test {
 private:
     BoundaryAllocator* allocator;
@@ -153,7 +155,7 @@ TEST_F(BoundaryAllocatorTest, AllocateAndDeallocateTwice) {
     void* ptr1 = allocator->allocate(allocSize);
     ASSERT_NE(ptr1, nullptr);
     checkInvariants();
-    
+
 
     size_t allocSize2 = 256;
     void* ptr2 = allocator->allocate(allocSize2);
@@ -217,11 +219,11 @@ TEST_F(BoundaryAllocatorTest, AllocateWholeArena) {
 
 TEST_F(BoundaryAllocatorTest, AllocateInOnlyFreeBlock) {
     size_t allocSize = ALLOCATOR_CAPACITY / 3 - MEMORY_BLOCK_SIZE;
-    
+
     void* ptr1 = allocator->allocate(allocSize);
     void* ptr2 = allocator->allocate(allocSize);
     void* ptr3 = allocator->allocate(allocSize);
-    
+
     void* ptr2Copy = ptr2;
     allocator->deallocate(ptr2, allocSize);
     checkInvariants();
@@ -229,7 +231,7 @@ TEST_F(BoundaryAllocatorTest, AllocateInOnlyFreeBlock) {
     void* ptr4 = allocator->allocate(allocSize);
     ASSERT_EQ(ptr4, ptr2Copy) << "Allocator did not allocate in the only free block";
     checkInvariants();
-    
+
 }
 
 TEST_F(BoundaryAllocatorTest, AllocateWithoutSplit) {
@@ -289,7 +291,7 @@ TEST_F(BoundaryAllocatorTest, RandomisedMemoryOperations) {
         int operation = std::uniform_int_distribution<>(0, 1)(generator);
 
         if (operation == 0 || allocations.empty()) {
-            
+
             size_t allocSize = std::uniform_int_distribution<>(1, ALLOCATOR_CAPACITY / 4)(generator);
             try {
                 void* ptr = allocator->allocate(allocSize);
@@ -299,7 +301,7 @@ TEST_F(BoundaryAllocatorTest, RandomisedMemoryOperations) {
                 continue;
             }
             //check that allocations are disjoint
-            
+
             for(size_t j = 0; j < allocations.size() - 1; ++j) {
                 void* start1 = allocations[j].ptr;
                 void* end1 = static_cast<std::byte*>(allocations[j].ptr) + allocations[j].size;
@@ -315,8 +317,8 @@ TEST_F(BoundaryAllocatorTest, RandomisedMemoryOperations) {
             allocations.erase(allocations.begin() + index);
         }
         checkInvariants();
-        if (::testing::Test::HasFatalFailure()) return;  
+        if (::testing::Test::HasFatalFailure()) return;
     }
 }
 
-    
+} // namespace mystd

@@ -13,4 +13,4 @@ if(ALLOC_BUILD_TESTS)
     enable_testing()
 endif()
 
-add_subdirectory(Allocators)
+add_subdirectory(src)

@@ -6,6 +6,8 @@
 #include <new>
 #include <algorithm>
 
+namespace mystd {
+
 const size_t BuddyAllocator::MIN_SIZE = std::max(size_t{32}, std::bit_ceil(sizeof(BuddyAllocator::Node)));
 
 BuddyAllocator::BuddyAllocator(size_t capacity) {
@@ -164,3 +166,4 @@ void* BuddyAllocator::getBuddyAddress(void* mem, size_t size) const {
     return static_cast<std::byte*>(memory) + buddyOffset;
 }
 
+} // namespace mystd

@@ -1,8 +1,10 @@
-#ifndef BOUNDARYALLOCATOR_H
-#define BOUNDARYALLOCATOR_H
+#ifndef MYSTD_ALLOCATORS_BOUNDARYALLOCATOR_BOUNDARYALLOCATOR_H
+#define MYSTD_ALLOCATORS_BOUNDARYALLOCATOR_BOUNDARYALLOCATOR_H
 
-#include "../BaseAllocator.h"
+#include "BaseAllocator.h"
 #include <cstddef>
+
+namespace mystd {
 
 class BoundaryAllocator : public BaseAllocator {
 private:
@@ -43,4 +45,6 @@ private:
     friend class BoundaryAllocatorTest;
 };
 
-#endif // BOUNDARYALLOCATOR_H
+} // namespace mystd
+
+#endif // MYSTD_ALLOCATORS_BOUNDARYALLOCATOR_BOUNDARYALLOCATOR_H

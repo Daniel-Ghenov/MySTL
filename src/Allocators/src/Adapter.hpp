@@ -1,7 +1,9 @@
-#ifndef ADAPTER_HPP
-#define ADAPTER_HPP
+#ifndef MYSTD_ALLOCATORS_ADAPTER_HPP
+#define MYSTD_ALLOCATORS_ADAPTER_HPP
 
 #include "BaseAllocator.h"
+
+namespace mystd {
 
 template <class T>
 class Adapter {
@@ -44,4 +46,6 @@ bool operator!=(const Adapter<T>& a, const Adapter<U>& b) noexcept {
     return !(a == b);
 }
 
-#endif // ADAPTER_HPP
+} // namespace mystd
+
+#endif // MYSTD_ALLOCATORS_ADAPTER_HPP

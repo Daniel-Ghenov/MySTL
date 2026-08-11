@@ -2,6 +2,8 @@
 #include <random>
 #include "BuddyAllocator.h"
 
+namespace mystd {
+
 class BuddyAllocatorTest : public ::testing::Test {
 protected:
     BuddyAllocator* allocator;
@@ -243,6 +245,8 @@ TEST_F(BuddyAllocatorTest, RandomisedMemoryOperations) {
             allocations.erase(allocations.begin() + index);
         }
         checkInvariants();
-        if (::testing::Test::HasFatalFailure()) return;  
+        if (::testing::Test::HasFatalFailure()) return;
     }
 }
+
+} // namespace mystd
