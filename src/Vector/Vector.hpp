@@ -104,6 +104,7 @@ private:
     void move(vector<T>&& other);
     void copyFrom(const vector<T>& other);
     void free()noexcept;
+    void reallocate(size_t newCapacity);
 
 
 };
@@ -285,17 +286,21 @@ size_t vector<T>::capacity() const{
 }
 template <typename T>
 void vector<T>::reserve(size_t number){
-    if(number <= _capacity)
-        return;
+    if(number > _capacity)
+        reallocate(number);
+}
 
-    void* temp = ::operator new(number * sizeof(T));
-    for(size_t i {0}; i < _size; i++){
+template <typename T>
+void vector<T>::reallocate(size_t newCapacity){
+    void* temp = ::operator new(newCapacity * sizeof(T));
+    size_t copyCount = std::min(_size, newCapacity);
+    for(size_t i {0}; i < copyCount; i++){
         new (static_cast<std::byte*>(temp) + (i * sizeof(T))) T(operator[](i));
     }
 
     ::operator delete(_data);
     _data = temp;
-    _capacity = number;
+    _capacity = newCapacity;
 }
 
 //_data Modificators
@@ -310,8 +315,7 @@ void vector<T>::push_back(const T& new_data){
     }
 
     if(_size == _capacity){
-        _capacity *= 2;
-        resize(_capacity);
+        reallocate(_capacity * VECTOR_UPSIZE_BY);
     }
     
     new (static_cast<std::byte*>(_data) + (_size++ * sizeof(T))) T(new_data);
@@ -326,8 +330,7 @@ void vector<T>::push_back(T&& new_data){
     }
 
     if(_size == _capacity){
-        _capacity *= 2;
-        resize(_capacity);
+        reallocate(_capacity * VECTOR_UPSIZE_BY);
     }
 
     new (static_cast<std::byte*>(_data) + (_size++ * sizeof(T))) T(std::move(new_data));
@@ -337,7 +340,7 @@ template <typename T>
 void vector<T>::pop_back(){
     _size--;
     if(_size < _capacity / VECTOR_DOWNSIZE_BY){
-        resize(_capacity / VECTOR_UPSIZE_BY);
+        reallocate(_capacity / VECTOR_UPSIZE_BY);
     }
 }
 
@@ -354,7 +357,7 @@ void vector<T>::insert(size_t index, const T& toInsert){
 
     index = std::min(index, _size);
     if(_size == _capacity){
-        resize(_capacity * VECTOR_UPSIZE_BY);
+        reallocate(_capacity * VECTOR_UPSIZE_BY);
     }
 
     for(size_t i = _size ; i > index; i--){
@@ -370,7 +373,7 @@ void vector<T>::insert(size_t index, T&& toInsert){
 
     index = std::min(index, _size);
     if(_size == _capacity){
-        resize(_capacity * VECTOR_UPSIZE_BY);
+        reallocate(_capacity * VECTOR_UPSIZE_BY);
     }
 
     for(size_t i = _size ; i > index; i--){

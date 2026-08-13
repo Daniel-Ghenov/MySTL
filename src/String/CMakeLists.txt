@@ -11,3 +11,7 @@ target_include_directories(string_lib
         ${CMAKE_CURRENT_SOURCE_DIR}/RollingHash
 )
 
+if(ALLOC_BUILD_TESTS)
+    add_subdirectory(tests)
+endif()
+

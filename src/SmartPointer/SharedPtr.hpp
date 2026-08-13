@@ -6,22 +6,26 @@ namespace mystd {
 
 template <typename T>
 class shared_ptr{
-private:
-    T* _data = nullptr;
-    counter* _counter = nullptr;
 public:
 
     struct counter{
         size_t _sharedCount = 0;
         size_t _weakCount = 0;
 
-        void add_shared() const;
-        void remove_shared() const;
-        void add_weak() const;
-        void remove_weak() const;
+        void add_shared();
+        void remove_shared();
+        void add_weak();
+        void remove_weak();
 
     };
 
+private:
+    T* _data = nullptr;
+    counter* _counter = nullptr;
+
+    template <typename U> friend class weak_ptr;
+
+public:
     shared_ptr() = default;
     shared_ptr(T* data);
     shared_ptr(const shared_ptr<T>& other);
@@ -50,23 +54,23 @@ private:
 };
 
 template <typename T>
-void shared_ptr<T>::counter::add_shared() const{
+void shared_ptr<T>::counter::add_shared(){
     _sharedCount++;
     if(_weakCount == 0)
         _weakCount++;
 }
 template <typename T>
-void shared_ptr<T>::counter::remove_shared() const{
+void shared_ptr<T>::counter::remove_shared(){
     _sharedCount--;
     if(_sharedCount == 0)
         _weakCount--;
 }
 template <typename T>
-void shared_ptr<T>::counter::add_weak() const{
+void shared_ptr<T>::counter::add_weak(){
     _weakCount++;
 }
 template <typename T>
-void shared_ptr<T>::counter::remove_weak() const{
+void shared_ptr<T>::counter::remove_weak(){
     _weakCount--;
 }
 
@@ -172,7 +176,7 @@ void shared_ptr<T>::copy_from(const shared_ptr<T>& other){
     _counter = other._counter;
 
     if(_counter){
-        _counter->add_shared;
+        _counter->add_shared();
     }
 
 }

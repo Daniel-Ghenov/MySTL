@@ -1,0 +1,10 @@
+add_library(type_traits_lib INTERFACE)
+
+target_include_directories(type_traits_lib
+    INTERFACE
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+if(ALLOC_BUILD_TESTS)
+    add_subdirectory(tests)
+endif()

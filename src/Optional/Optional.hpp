@@ -169,30 +169,30 @@ namespace mystd {
         
         iterator begin() {
             if (has_value_flag)
-                return iterator{&this};
+                return iterator{this};
             return iterator{nullptr};
         }
-        
+
         iterator end() {
             return iterator{nullptr};
         }
 
         const_iterator begin() const {
             if (has_value_flag)
-                return iterator{&this};
-            return iterator{nullptr};
+                return const_iterator{this};
+            return const_iterator{nullptr};
         }
-        
+
         const_iterator end() const {
-            return iterator{nullptr};
+            return const_iterator{nullptr};
         }
 
         constexpr const T* operator->() const noexcept {
-            return _value;
-        
+            return &_value;
+
         }
         constexpr T* operator->() noexcept {
-            return _value;
+            return &_value;
         }
         constexpr const T& operator*() const& noexcept {
             return _value;

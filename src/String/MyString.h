@@ -24,7 +24,7 @@ public:
     static const size_t npos = -1;  //return-value for "no instance found"
 
 
-    string() = default;   //Big 4 and Constructors
+    string();   //Big 4 and Constructors
     string(const char* content);
     explicit string(size_t capacity);
     ~string();

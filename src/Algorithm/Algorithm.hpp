@@ -81,7 +81,7 @@ namespace mystd {
 
     template< class ForwardIt, class UnaryPred >
     ForwardIt partition(ForwardIt first, ForwardIt last, UnaryPred p ) {
-        size_t partition_index = count_if(first, last, p);
+        size_t partition_index = mystd::count_if(first, last, p);
         ForwardIt second_part = first;
         for(size_t i{0uz}; i < partition_index; ++i) {
             second_part++;

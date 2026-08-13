@@ -78,7 +78,7 @@ weak_ptr<T>::~weak_ptr(){
 
 template <typename T>
 const T& weak_ptr<T>::operator*() const{
-    retrun *_data;
+    return *_data;
 }
 template <typename T>
 const T* weak_ptr<T>::operator->() const{
@@ -91,11 +91,11 @@ T* weak_ptr<T>::get(){
 
 template <typename T>
 bool weak_ptr<T>::operator==(const weak_ptr<T>& other) const{
-    return _data = other._data;
+    return _data == other._data;
 }
 template <typename T>
 bool weak_ptr<T>::operator==(const T* ptr) const{
-    return _data = ptr;
+    return _data == ptr;
 }
 template <typename T>
 weak_ptr<T>::operator bool() const{
@@ -106,7 +106,7 @@ template <typename T>
 void weak_ptr<T>::free(){
     if(_counter){
         _counter->remove_weak();
-        if(_counter->weakCount == 0)
+        if(_counter->_weakCount == 0)
             delete _counter;
     }
 }
@@ -115,7 +115,7 @@ void weak_ptr<T>::copy_from(const shared_ptr<T>& other){
     _data = other._data;
     _counter = other._counter;
     if(_counter)
-        _counter.add_weak();
+        _counter->add_weak();
 
 }
 
@@ -124,7 +124,7 @@ void weak_ptr<T>::copy_from(const weak_ptr<T>& other){
     _data = other._data;
     _counter = other._counter;
     if(_counter)
-        _counter.add_weak();
+        _counter->add_weak();
 
 }
 

@@ -2,6 +2,10 @@
 
 namespace mystd {
 
+string::string(){
+    set_short_size(0);
+}
+
 string::string(const char* content){
     if(!content)
         throw std::logic_error("Cannot initialize with nullptr");
@@ -14,10 +18,10 @@ string::string(const char* content){
     }
 
     else{   //normal initialization
-        set_size(len + 1);
-        _data = new char[size() * STRING_UPSIZE_BY];
+        set_size(len);
+        _data = new char[(size() + 1) * STRING_UPSIZE_BY];
         strcpy(_data, content);
-        set_capacity(size() * STRING_UPSIZE_BY);
+        set_capacity((size() + 1) * STRING_UPSIZE_BY);
     }
 }
 string::string(size_t capacity){
@@ -157,7 +161,7 @@ const char& string::at(size_t size) const{
 }
 
 char& string::at(size_t size){
-    if(size > _size)
+    if(size > this->size())
         throw std::out_of_range("Out of Bounds");
 
     return (*this)[size];
@@ -181,14 +185,14 @@ const char& string::back() const {
         throw std::logic_error("String has been Deleted");
 
 
-    return (*this)[_size];
+    return (*this)[this->size() - 1];
 }
 
 char& string::back(){
     if(_data == nullptr)
         throw std::logic_error("String has been Deleted");
 
-    return (*this)[_size];
+    return (*this)[size() - 1];
 }
 
 
@@ -227,7 +231,12 @@ string& string::push_back(char c){
     if(size() == capacity())
         resize(capacity() * STRING_UPSIZE_BY);
 
-    (*this)[_size++] = c;
+    size_t oldSize = size();
+    data()[oldSize] = c;
+    if(is_short())
+        set_short_size(oldSize + 1);
+    else
+        set_size(oldSize + 1);
     return *this;
 }
 
@@ -244,9 +253,15 @@ void string::swap(string& other){
 }
 
 void string::pop_back(){
-    _data[_size--] = '\0';
-    if(_size < _capacity / STRING_DOWNSIZE_BY){
-        resize(_capacity / STRING_UPSIZE_BY);
+    size_t oldSize = size();
+    data()[oldSize - 1] = '\0';
+    if(is_short()){
+        set_short_size(oldSize - 1);
+        return;
+    }
+    set_size(oldSize - 1);
+    if(size() < capacity() / STRING_DOWNSIZE_BY){
+        resize(capacity() / STRING_UPSIZE_BY);
     }
 }
 

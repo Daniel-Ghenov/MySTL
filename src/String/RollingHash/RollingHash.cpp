@@ -2,7 +2,7 @@
 
 namespace mystd {
 
-rolling_hash::rolling_hash(const char* string, size_t strlen): primeFac(){
+rolling_hash::rolling_hash(const char* string, size_t strlen){
     if(!strlen){
         strlen = mystd::strlen(string);
     }

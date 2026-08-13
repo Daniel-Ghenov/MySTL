@@ -50,8 +50,6 @@ void strcat(char* Destination, const char* Source){
     nullIdx--;
 
     for(size_t i {0} ;; i++){
-        if(Destination[i + nullIdx] == '\0')
-            return;
         Destination[i + nullIdx] = Source[i];
         if(Source[i] == '\0')
             return;
