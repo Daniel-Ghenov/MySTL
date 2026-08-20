@@ -8,7 +8,7 @@ template <typename T>
 class weak_ptr{
 private:
     const T* _data = nullptr;
-    shared_ptr<T>::counter* _counter = nullptr;
+    shared_ptr<T>::counter_base* _counter = nullptr;
 
 public:
 

@@ -8,7 +8,7 @@
 namespace mystd
 {
     BoundaryAllocator::BoundaryAllocator(size_t capacity) : capacity(capacity) {
-        memory = ::operator new(capacity);
+        memory = ::operator new(capacity, std::align_val_t{ALIGNMENT});
         reset();
     }
 
@@ -29,6 +29,8 @@ namespace mystd
     }
 
     void* BoundaryAllocator::allocate(size_t size) {
+        size = alignUp(size);
+
         MemoryBlock* iter = firstFree;
         while (iter) {
             if (iter->size < size) {
@@ -144,7 +146,7 @@ namespace mystd
     }
 
     void BoundaryAllocator::free() {
-        operator delete(memory);
+        ::operator delete(memory, std::align_val_t{ALIGNMENT});
     }
 
     void BoundaryAllocator::moveFrom(BoundaryAllocator&& other) {
@@ -156,5 +158,9 @@ namespace mystd
     size_t BoundaryAllocator::getNextPowerOfTwo(size_t size) {
         if (size <= 1) return 1;
         return std::bit_ceil(size);
+    }
+
+    size_t BoundaryAllocator::alignUp(size_t size) const {
+        return (size + ALIGNMENT - 1) & ~(ALIGNMENT - 1);
     }
 }

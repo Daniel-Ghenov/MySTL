@@ -9,10 +9,11 @@ namespace mystd {
 class BoundaryAllocator : public BaseAllocator {
 private:
     static const size_t MIN_SIZE = 32; // bytes
+    static const size_t ALIGNMENT = alignof(std::max_align_t); // every returned block is aligned to this
     void* memory = nullptr;
     size_t capacity = -1;
 
-    struct MemoryBlock {
+    struct alignas(ALIGNMENT) MemoryBlock {
         MemoryBlock* nextFree = nullptr;
         MemoryBlock* prevFree = nullptr;
         MemoryBlock* prev = nullptr;
@@ -41,6 +42,7 @@ private:
     void free();
     void moveFrom(BoundaryAllocator&& other);
     size_t getNextPowerOfTwo(size_t size);
+    size_t alignUp(size_t size) const;
 
     friend class BoundaryAllocatorTest;
 };

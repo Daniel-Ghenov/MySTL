@@ -1,27 +1,67 @@
 #ifndef MYSTD_SMARTPOINTER_SHAREDPTR_HPP
 #define MYSTD_SMARTPOINTER_SHAREDPTR_HPP
-#include <iostream>
 
+#include <cstddef>
+#include <utility>
 namespace mystd {
+
+template <typename T>
+class shared_ptr;
+
+template <typename T, typename... Args>
+shared_ptr<T> make_shared(Args&&... args);
 
 template <typename T>
 class shared_ptr{
 public:
 
-    struct counter{
+    class counter_base {
+    public:
         size_t _sharedCount = 0;
         size_t _weakCount = 0;
+        virtual ~counter_base() = default;
 
-        void add_shared();
-        void remove_shared();
-        void add_weak();
-        void remove_weak();
+        virtual void add_shared() = 0;
+        virtual void remove_shared() = 0;
+        virtual void add_weak() = 0;
+        virtual void remove_weak() = 0;
 
     };
 
+    class counter_seperate : public counter_base {
+    public:
+        T* data;
+
+    private:
+        ~counter_seperate() override;
+
+        void add_shared() override;
+        void remove_shared() override;
+        void add_weak() override;
+        void remove_weak() override;
+
+    };
+
+    class counter_inline : public counter_base {
+    public:
+        T data;
+
+        template<typename ...Args>
+        counter_inline(Args&&... args): data(std::forward<Args>(args)...) {}
+
+    private:
+        ~counter_inline() override = default;
+
+        void add_shared() override;
+        void remove_shared() override;
+        void add_weak() override;
+        void remove_weak() override;
+    };
+
+
 private:
     T* _data = nullptr;
-    counter* _counter = nullptr;
+    counter_base* _counter = nullptr;
 
     template <typename U> friend class weak_ptr;
 
@@ -51,27 +91,58 @@ private:
     void copy_from(const shared_ptr<T>& other);
     void move(shared_ptr&& other);
 
+    template <typename U, typename ...Args>
+    friend shared_ptr<U> make_shared(Args&&... args);
 };
 
 template <typename T>
-void shared_ptr<T>::counter::add_shared(){
-    _sharedCount++;
-    if(_weakCount == 0)
-        _weakCount++;
+void shared_ptr<T>::counter_seperate::add_shared() {
+    this->_sharedCount++;
+    if(this->_weakCount == 0)
+        this->_weakCount++;
 }
 template <typename T>
-void shared_ptr<T>::counter::remove_shared(){
-    _sharedCount--;
-    if(_sharedCount == 0)
-        _weakCount--;
+void shared_ptr<T>::counter_seperate::remove_shared() {
+    this->_sharedCount--;
+    if(this->_sharedCount == 0) {
+        delete data;
+        this->_weakCount--;
+    }
 }
 template <typename T>
-void shared_ptr<T>::counter::add_weak(){
-    _weakCount++;
+void shared_ptr<T>::counter_seperate::add_weak() {
+    this->_weakCount++;
 }
 template <typename T>
-void shared_ptr<T>::counter::remove_weak(){
-    _weakCount--;
+void shared_ptr<T>::counter_seperate::remove_weak() {
+    this->_weakCount--;
+}
+
+template <typename T>
+shared_ptr<T>::counter_seperate::~counter_seperate() {
+    remove_shared();
+}
+
+template <typename T>
+void shared_ptr<T>::counter_inline::add_shared() {
+    this->_sharedCount++;
+    if(this->_weakCount == 0)
+        this->_weakCount++;
+}
+template <typename T>
+void shared_ptr<T>::counter_inline::remove_shared() {
+    this->_sharedCount--;
+    if(this->_sharedCount == 0) {
+        this->_weakCount--;
+    }
+}
+template <typename T>
+void shared_ptr<T>::counter_inline::add_weak() {
+    this->_weakCount++;
+}
+template <typename T>
+void shared_ptr<T>::counter_inline::remove_weak() {
+    this->_weakCount--;
 }
 
 
@@ -79,7 +150,9 @@ template <typename T>
 shared_ptr<T>::shared_ptr(T* data){
     _data = data;
     if(_data){
-        _counter = new counter;
+        auto* sep = new counter_seperate;
+        sep->data = data;
+        _counter = sep;
         _counter->add_shared();
     }
 
@@ -162,8 +235,6 @@ template <typename T>
 void shared_ptr<T>::free(){
     if(_counter){
         _counter->remove_shared();
-        if(_counter->_sharedCount == 0)
-            delete _data;
         if(_counter->_weakCount == 0)
             delete _counter;
     }
@@ -188,6 +259,16 @@ void shared_ptr<T>::move(shared_ptr&& other){
 
     _counter = other._counter;
     other._counter = nullptr;
+}
+
+template <typename T, typename ...Args>
+shared_ptr<T> make_shared(Args&&... args) {
+    shared_ptr<T> ptr;
+    auto* block = new shared_ptr<T>::counter_inline(std::forward<Args>(args)...);
+    ptr._counter = block;
+    ptr._counter->add_shared();
+    ptr._data = &block->data;
+    return ptr;
 }
 
 } // namespace mystd

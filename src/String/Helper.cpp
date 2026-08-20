@@ -64,22 +64,21 @@ unsigned strlen(const char* str){
     while(str[length++] != '\0');
     return length - 1;
 }
-size_t linear_find(const char* findIn, const char* toFind){
+size_t linear_find(const char* toFind, const char* findIn){
     if(!toFind || !findIn)
         throw std::logic_error("Cannot process nullptr");
 
     size_t toFindLen = strlen(toFind);
     size_t findInLen = strlen(findIn);
 
-    for(size_t i {0}; i < findInLen; i++){
-        for(size_t j {0}; j <= findInLen; j++){
-            if(j == findInLen)
-                return i;
-            if(findIn[i + j] != toFind[j]){
+    for(size_t i {0}; i + toFindLen <= findInLen; i++){
+        size_t j {0};
+        for(; j < toFindLen; j++){
+            if(findIn[i + j] != toFind[j])
                 break;
-            }
-
         }
+        if(j == toFindLen)
+            return i;
     }
     return -1;
 }

@@ -7,8 +7,4 @@ target_include_directories(unordered_map_lib
 
 target_link_libraries(unordered_map_lib INTERFACE vector_lib list_lib tuple_pair algorithm_lib)
 
-if(ALLOC_BUILD_TESTS)
-    add_subdirectory(tests)
-endif()
-
 

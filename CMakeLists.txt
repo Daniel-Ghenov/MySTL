@@ -9,8 +9,20 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(CMAKE_C_FLAGS_RELEASE "-O3")
 
 option(ALLOC_BUILD_TESTS "Build the test suite" ON)
-if(ALLOC_BUILD_TESTS)
-    enable_testing()
-endif()
 
 add_subdirectory(src)
+
+if(ALLOC_BUILD_TESTS)
+    enable_testing()
+
+    include(FetchContent)
+    FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG        v1.15.2          # pinned: reproducible builds
+    )
+    FetchContent_MakeAvailable(googletest)
+    include(GoogleTest)
+
+    add_subdirectory(tests)
+endif()

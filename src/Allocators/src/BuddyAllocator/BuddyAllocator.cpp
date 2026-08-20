@@ -109,7 +109,7 @@ bool BuddyAllocator::deallocate(void* mem, size_t size) noexcept {
 }
 
 void BuddyAllocator::reset() {
-    memory = operator new(capacity);
+    memory = ::operator new(capacity, std::align_val_t{MIN_SIZE});
     size_t blockSizesCount = std::countr_zero(capacity / MIN_SIZE) + 1;
     freeLists = std::vector<Node*>(blockSizesCount, nullptr);
     freeLists[0] = new (memory) Node({memory, nullptr, nullptr, capacity});
@@ -122,7 +122,7 @@ void BuddyAllocator::reset() {
 }
 
 void BuddyAllocator::free() {
-    operator delete(memory);
+    ::operator delete(memory, std::align_val_t{MIN_SIZE});
 }
 
 void BuddyAllocator::moveFrom(BuddyAllocator&& other) {

@@ -7,6 +7,13 @@ using mystd::shared_ptr;
 using mystd::unique_ptr;
 using mystd::weak_ptr;
 
+namespace {
+struct DestructTracker {
+    static inline int destructions = 0;
+    ~DestructTracker() { ++destructions; }
+};
+}
+
 TEST(SharedPtrTest, DefaultConstructedIsFalsy) {
     shared_ptr<int> p;
     EXPECT_FALSE(static_cast<bool>(p));
@@ -69,6 +76,47 @@ TEST(SharedPtrTest, CopiesKeepObjectAliveUntilLastOneDestroyed) {
     }
     // b went out of scope; a should still be valid.
     EXPECT_EQ(*a, 123);
+}
+
+TEST(SharedPtrTest, MakeSharedConstructsValueInPlace) {
+    auto p = mystd::make_shared<int>(42);
+    EXPECT_TRUE(static_cast<bool>(p));
+    EXPECT_EQ(*p, 42);
+}
+
+TEST(SharedPtrTest, MakeSharedForwardsMultipleArgsToConstructor) {
+    struct Point { int x; int y; };
+    auto p = mystd::make_shared<Point>(3, 4);
+    EXPECT_EQ(p->x, 3);
+    EXPECT_EQ(p->y, 4);
+}
+
+TEST(SharedPtrTest, MakeSharedCopySharesSameUnderlyingObject) {
+    auto a = mystd::make_shared<int>(5);
+    shared_ptr<int> b(a);
+
+    EXPECT_TRUE(a == b);
+    EXPECT_EQ(a.get(), b.get());
+    EXPECT_EQ(*b, 5);
+}
+
+TEST(SharedPtrTest, MakeSharedDestroysObjectWhenLastReferenceGoesAway) {
+    DestructTracker::destructions = 0;
+    {
+        auto p = mystd::make_shared<DestructTracker>();
+        auto q = p;
+    }
+    EXPECT_EQ(DestructTracker::destructions, 1);
+}
+
+TEST(SharedPtrTest, MakeSharedKeepsObjectAliveUntilLastCopyDestroyed) {
+    DestructTracker::destructions = 0;
+    auto p = mystd::make_shared<DestructTracker>();
+    {
+        auto q = p;
+        EXPECT_EQ(DestructTracker::destructions, 0);
+    }
+    EXPECT_EQ(DestructTracker::destructions, 0) << "p should still keep the object alive";
 }
 
 TEST(UniquePtrTest, ConstructedFromRawPointerOwnsIt) {

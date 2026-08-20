@@ -218,7 +218,9 @@ TEST_F(BoundaryAllocatorTest, AllocateWholeArena) {
 }
 
 TEST_F(BoundaryAllocatorTest, AllocateInOnlyFreeBlock) {
-    size_t allocSize = ALLOCATOR_CAPACITY / 3 - MEMORY_BLOCK_SIZE;
+    // Rounded down to a multiple of 64 so the allocator's internal alignment padding
+    // can't push three equal allocations over ALLOCATOR_CAPACITY.
+    size_t allocSize = (ALLOCATOR_CAPACITY / 3 - MEMORY_BLOCK_SIZE) & ~size_t{63};
 
     void* ptr1 = allocator->allocate(allocSize);
     void* ptr2 = allocator->allocate(allocSize);
