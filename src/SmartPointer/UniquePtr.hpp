@@ -1,6 +1,8 @@
 #ifndef MYSTD_SMARTPOINTER_UNIQUEPTR_HPP
 #define MYSTD_SMARTPOINTER_UNIQUEPTR_HPP
 
+#include <utility>
+
 namespace mystd {
 
 template <typename T>
@@ -30,6 +32,9 @@ public:
 private:
     void free();
     void move(unique_ptr&& other);
+
+    template <typename U, typename ...Args>
+    friend unique_ptr<U> make_unique(Args&&... args);
 
 };
 
@@ -83,6 +88,11 @@ template <typename T>
 void unique_ptr<T>::move(unique_ptr&& other){
     _data = other._data;
     other._data = nullptr;
+}
+
+template <typename U, typename ...Args>
+unique_ptr<U> make_unique(Args&&... args) {
+    return unique_ptr<U>(new U(std::forward<Args>(args)...));
 }
 
 } // namespace mystd

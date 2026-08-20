@@ -144,6 +144,39 @@ TEST(UniquePtrTest, MoveAssignmentTransfersOwnership) {
     EXPECT_EQ(*b, 1);
 }
 
+TEST(UniquePtrTest, MakeUniqueConstructsValueInPlace) {
+    auto p = mystd::make_unique<int>(42);
+    EXPECT_EQ(*p, 42);
+}
+
+TEST(UniquePtrTest, MakeUniqueForwardsMultipleArgsToConstructor) {
+    struct Point { int x; int y; };
+    auto p = mystd::make_unique<Point>(3, 4);
+    EXPECT_EQ(p->x, 3);
+    EXPECT_EQ(p->y, 4);
+}
+
+TEST(UniquePtrTest, MakeUniqueArrowOperatorAccessesMembers) {
+    struct Point { int x; int y; };
+    auto p = mystd::make_unique<Point>(1, 2);
+    EXPECT_EQ(p->x, 1);
+    EXPECT_EQ(p->y, 2);
+}
+
+TEST(UniquePtrTest, MakeUniqueSupportsMoveConstruction) {
+    auto a = mystd::make_unique<int>(5);
+    unique_ptr<int> b(std::move(a));
+    EXPECT_EQ(*b, 5);
+}
+
+TEST(UniquePtrTest, MakeUniqueDestroysObjectWhenGoingOutOfScope) {
+    DestructTracker::destructions = 0;
+    {
+        auto p = mystd::make_unique<DestructTracker>();
+    }
+    EXPECT_EQ(DestructTracker::destructions, 1);
+}
+
 TEST(WeakPtrTest, DefaultConstructedIsExpired) {
     weak_ptr<int> w;
     EXPECT_FALSE(static_cast<bool>(w));
