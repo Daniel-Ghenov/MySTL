@@ -1,6 +1,7 @@
 add_subdirectory(Allocators)
 add_subdirectory(Algorithm)
 add_subdirectory(Any)
+add_subdirectory(Expected)
 add_subdirectory(Iterator)
 add_subdirectory(List)
 add_subdirectory(Optional)

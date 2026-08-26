@@ -1,6 +1,7 @@
 add_subdirectory(algorithm)
 add_subdirectory(allocators)
 add_subdirectory(any)
+add_subdirectory(expected)
 add_subdirectory(list)
 add_subdirectory(optional)
 add_subdirectory(smart_pointer)
